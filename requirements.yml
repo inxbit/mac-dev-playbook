@@ -1,6 +1,9 @@
 ---
 roles:
-  - name: elliotweiser.osx-command-line-tools
+  - name: inxbit.osx-command-line-tools
+    src: https://github.com/inxbit/ansible-osx-command-line-tools.git
+    scm: git
+    version: f728c0b4f20fa929170636764eab4b28cf528a9d
   - name: geerlingguy.dotfiles
 
 collections:
