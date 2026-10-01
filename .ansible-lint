@@ -1,6 +1,6 @@
 ---
 exclude_paths:
-  - roles/elliotweiser.osx-command-line-tools
+  - roles/inxbit.osx-command-line-tools
 
 skip_list:
   - schema[meta]
