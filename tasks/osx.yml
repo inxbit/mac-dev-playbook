@@ -9,8 +9,8 @@
     - name: Allow .osx sudo commands without a password.
       copy:
         content: |
-          Defaults:{{ ansible_user_id }} verifypw=any
-          {{ ansible_user_id }} ALL=(root) NOPASSWD: /usr/sbin/systemsetup -setrestartfreeze on, /usr/bin/mdutil -i on /, /usr/bin/mdutil -E /
+          Defaults:{{ ansible_facts['user_id'] }} verifypw=any
+          {{ ansible_facts['user_id'] }} ALL=(root) NOPASSWD: /usr/sbin/systemsetup -setrestartfreeze on, /usr/bin/mdutil -i on /, /usr/bin/mdutil -E /
         dest: /private/etc/sudoers.d/osx-dotfiles
         mode: 0440
         validate: 'visudo -cf %s'
