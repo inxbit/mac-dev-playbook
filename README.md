@@ -17,7 +17,7 @@ This playbook installs and configures most of the software I use on my Mac for w
 
   3. Clone or download this repository to your local drive.
   4. Run `ansible-galaxy install -r requirements.yml` inside this directory to install required Ansible roles.
-  5. Run `ansible-playbook main.yml --ask-become-pass` inside this directory. Enter your macOS account password when prompted for the 'BECOME' password.
+  5. Run `ansible-playbook main.yml` inside this directory. Enter your macOS account password when prompted for the 'BECOME' password (don't also pass `--ask-become-pass`; the playbook prompts itself so casks whose installers need sudo get the password too).
 
 > Note: If some Homebrew commands fail, you might need to agree to Xcode's license or fix some other Brew issue. Run `brew doctor` to see if this is the case.
 
@@ -44,7 +44,7 @@ If you need to supply an SSH password (if you don't use SSH keys), make sure to 
 
 You can filter which part of the provisioning process to run by specifying a set of tags using `ansible-playbook`'s `--tags` flag. The tags available are `dotfiles`, `homebrew`, `mas`, `extra-packages` and `osx`.
 
-    ansible-playbook main.yml -K --tags "dotfiles,homebrew"
+    ansible-playbook main.yml --tags "dotfiles,homebrew"
 
 ## Overriding Defaults
 
