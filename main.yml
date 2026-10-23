@@ -5,6 +5,17 @@
   vars_files:
     - default.config.yml
 
+  # -K hands the password to become only; casks whose installers run sudo
+  # (zoom, blockblock, ...) get it from ansible_become_password via the
+  # homebrew_cask module's SUDO_ASKPASS. Prompting for the variable feeds both.
+  # Non-interactive runs (CI) skip the prompt and use the empty default.
+  vars_prompt:
+    - name: ansible_become_password
+      prompt: BECOME password
+      private: true
+      unsafe: true
+      default: ""
+
   pre_tasks:
     - name: Include playbook configuration.
       include_vars: "{{ item }}"
