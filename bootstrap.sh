@@ -55,7 +55,12 @@ for formula in ansible gh stow; do
 done
 
 step "GitHub login"
-gh auth status >/dev/null 2>&1 || gh auth login --hostname github.com --git-protocol https --web
+# gh offers to set itself up as git's credential helper. Send that write to a
+# throwaway file: a ~/.gitconfig created here would block a dotfiles Stow
+# package that links its own ~/.gitconfig. gh repo clone authenticates itself.
+if ! gh auth status >/dev/null 2>&1; then
+  GIT_CONFIG_GLOBAL=$(mktemp) gh auth login --hostname github.com --git-protocol https --web
+fi
 
 step "Playbook checkout"
 [[ -d $PLAYBOOK_DIR/.git ]] || git clone "$PLAYBOOK_REPO" "$PLAYBOOK_DIR"
