@@ -5,6 +5,8 @@ roles:
     scm: git
     version: f728c0b4f20fa929170636764eab4b28cf528a9d
   - name: geerlingguy.dotfiles
+    version: 1.3.2
 
 collections:
   - name: geerlingguy.mac
+    version: 4.2.0

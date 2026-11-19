@@ -33,6 +33,8 @@ jobs:
         run: |
           yamllint .
           ansible-lint
+          shellcheck bootstrap.sh
+          python3 -m py_compile scripts/drift.py
 
   integration:
     name: Integration

@@ -8,6 +8,20 @@ This playbook installs and configures most of the software I use on my Mac for w
 
 ## Installation
 
+### Fresh Mac (this fork)
+
+Unplug any smart card such as a YubiKey, then run this from Terminal:
+
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/inxbit/mac-dev-playbook/master/bootstrap.sh)"
+
+`bootstrap.sh` installs the Command Line Tools, Rosetta, Homebrew, Ansible, `gh` and GNU Stow, logs in to GitHub, clones this playbook to `~/Documents/Projects/mac-dev-playbook` and the dotfiles repository (`DOTFILES_REPO`, default `inxbit/dotfiles`) to `~/dotfiles`, links `config.yml` from the dotfiles `mac-dev-playbook` Stow package, installs the Galaxy requirements and runs the playbook. Arguments after a placeholder go to `ansible-playbook`, for example `bash -c "$(curl ...)" - --skip-tags mas`. Rerunning it skips the steps that are already done.
+
+The playbook stops before changing anything when `config.yml` is missing or a smart card is inserted: sudo asks a paired card for its PIN before the password, so the become password would be spent as a PIN attempt.
+
+To see what this Mac has that `config.yml` lacks, and the reverse, run `"$(brew --prefix ansible)/libexec/bin/python3" scripts/drift.py`. It exits 1 when anything differs.
+
+### Manual installation (upstream steps)
+
   1. Ensure Apple's command line tools are installed (`xcode-select --install` to launch the installer).
   2. [Install Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html):
 

@@ -17,6 +17,35 @@
       default: ""
 
   pre_tasks:
+    - name: Ensure a config.yml override exists.
+      assert:
+        that: lookup('ansible.builtin.fileglob', playbook_dir ~ '/config.yml') | length > 0
+        fail_msg: >-
+          No config.yml next to main.yml, so only default.config.yml would
+          apply. Create or link config.yml first (bootstrap.sh links it from
+          the dotfiles repository).
+        quiet: true
+      tags: ['always']
+
+    # sudo asks a paired smart card for its PIN before the password, so a
+    # become or SUDO_ASKPASS password would be spent as a PIN attempt.
+    - name: Look for an inserted smart card.
+      command: security list-smartcards
+      register: smartcards
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      tags: ['always']
+
+    - name: Stop while a smart card is inserted.
+      fail:
+        msg: >-
+          A smart card such as a YubiKey is inserted. sudo would read the
+          become password as its PIN, and wrong PINs lock the card. Unplug it
+          and rerun.
+      when: smartcards.stdout_lines | select('search', ':') | list | length > 0
+      tags: ['always']
+
     - name: Include playbook configuration.
       include_vars: "{{ item }}"
       with_fileglob:
